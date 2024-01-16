@@ -24,17 +24,31 @@ total_monthly_precipitation_list = []
 for key, value in total_monthly_precipitation.items():
     total_monthly_precipitation_list.append(value)
 
+# Calculating the total yearly precipitation
+    
+total_yearly_precipitation = {} 
+for year in seattle_results:
+    if year['date'][0] in total_yearly_precipitation:
+        total_yearly_precipitation[year['date'][0]] = total_yearly_precipitation[year['date'][0]] + year['value']
+    else:
+        total_yearly_precipitation[year['date'][0]] = year['value']
+
+total_yearly_precipitation_list = []
+for key, value in total_yearly_precipitation.items():
+    total_yearly_precipitation_list.append(value)
+
 # Saving the results to a result file:
     
 results = {
     'Seattle': {
         'station': 'GHCND:US1WAKG0038',
         'state': 'WA',
-        'total_monthly_precipitation': total_monthly_precipitation_list
+        'total_monthly_precipitation': total_monthly_precipitation_list,
+        'total_yearly_precipitation': total_yearly_precipitation_list
     }
 }
 
 with open ('results.json', 'w', encoding = 'utf-8') as file:
     json.dump(results, file, indent = 3)
 
-print(results)
+print(total_yearly_precipitation)
