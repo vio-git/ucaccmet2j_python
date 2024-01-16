@@ -1,6 +1,10 @@
 import json
+from csv import DictReader
 with open ('precipitation.json', encoding= 'utf-8') as file:
     precipitation = json.load(file)
+with open('stations.csv') as file:
+    reader = DictReader(file)
+    stations = list(reader)
 
 # Selecting Seattle out of the precipitation.json file and splitting the dates (to extract the month later on):
     
@@ -10,6 +14,16 @@ for measurement in precipitation:
     if city == 'GHCND:US1WAKG0038':
         seattle_results.append(measurement)
     measurement['date'] = measurement['date'].split('-')
+
+# Selecting the city stations out of the precipitation.json file and splitting the dates (to extract the month later on):
+
+for measurement in precipitation:
+    for station in stations:
+        if station['Station'] == measurement['station']:
+            measurement # if the statement above is true -> add it to a list with the name of the city that the station code belongs to (from the 'stations' list)
+
+# Now we would have four lists with the names of each city, contiaining the measurements for that respective station.
+# Later on, loop in each lists to the code for the other calculations below.
 
 # Calculating the total monthly precipitation:
     
@@ -54,6 +68,8 @@ results = {
         'relative_monthly_precipitation': relative_monthly_precipitation
     }
 }
+
+# Writing the results into a document:
 
 with open ('results.json', 'w', encoding = 'utf-8') as file:
     json.dump(results, file, indent = 3)
