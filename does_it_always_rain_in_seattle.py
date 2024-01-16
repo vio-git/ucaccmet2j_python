@@ -37,6 +37,12 @@ total_yearly_precipitation_list = []
 for key, value in total_yearly_precipitation.items():
     total_yearly_precipitation_list.append(value)
 
+# Calculating the relative monthly precipitation (proportion of yearly rain) per month:
+    
+relative_monthly_precipitation = []
+for monthly_precipitation in total_monthly_precipitation_list:
+    relative_monthly_precipitation.append(monthly_precipitation / total_yearly_precipitation_list[0]) 
+
 # Saving the results to a result file:
     
 results = {
@@ -44,11 +50,12 @@ results = {
         'station': 'GHCND:US1WAKG0038',
         'state': 'WA',
         'total_monthly_precipitation': total_monthly_precipitation_list,
-        'total_yearly_precipitation': total_yearly_precipitation_list
+        'total_yearly_precipitation': total_yearly_precipitation_list,
+        'relative_monthly_precipitation': relative_monthly_precipitation
     }
 }
 
 with open ('results.json', 'w', encoding = 'utf-8') as file:
     json.dump(results, file, indent = 3)
 
-print(total_yearly_precipitation)
+print(relative_monthly_precipitation)
